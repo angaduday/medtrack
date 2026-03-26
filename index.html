@@ -562,11 +562,13 @@ If nothing found return: []`;
     });
     const data = await res.json();
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+    console.log("Gemini raw response:", raw);
+    console.log("Full API response:", JSON.stringify(data));
     const cleaned = raw.replace(/```json|```/g, "").trim();
     const parsed = JSON.parse(cleaned);
     if (!Array.isArray(parsed) || parsed.length === 0) {
       scanState = "idle";
-      showToast("No medications found. Try a clearer photo.");
+      showToast("No meds found. Raw: " + raw.slice(0, 100));
       renderScan();
       return;
     }
